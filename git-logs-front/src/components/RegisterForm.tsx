@@ -5,7 +5,9 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { useRegister } from "~/hooks/mutations/useRegister";
 
 interface Inputs {
   username: string;
@@ -19,8 +21,18 @@ export const RegisterForm: React.FC = () => {
     formState: { errors, isLoading },
   } = useForm<Inputs>();
 
+  const router = useRouter();
   console.info(errors);
-  const onSumbit: SubmitHandler<Inputs> = (data) => console.info(data);
+  const mutation = useRegister();
+  const onSumbit: SubmitHandler<Inputs> = (data) => {
+    mutation.mutate(
+      { ...data },
+      {
+        onSuccess: () => router.push("/dashboard"),
+        onError: () => console.error("An error occured!"),
+      },
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit(onSumbit)}>
