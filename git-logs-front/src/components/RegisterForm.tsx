@@ -7,24 +7,22 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { useRegister } from "~/hooks/mutations/useRegister";
-
-interface Inputs {
-  username: string;
-  password: string;
-}
+import {
+  type RegisterVariables,
+  useRegister,
+} from "~/hooks/mutations/useRegister";
 
 export const RegisterForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isLoading },
-  } = useForm<Inputs>();
+  } = useForm<RegisterVariables>();
 
   const router = useRouter();
   console.info(errors);
   const mutation = useRegister();
-  const onSumbit: SubmitHandler<Inputs> = (data) => {
+  const onSumbit: SubmitHandler<RegisterVariables> = (data) => {
     mutation.mutate(
       { ...data },
       {
