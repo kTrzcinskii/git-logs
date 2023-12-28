@@ -4,10 +4,12 @@ import {
   FormLabel,
   Input,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type LoginVariables, useLogin } from "~/hooks/mutations/useLogin";
+import { errorToastOptions } from "~/toasts/errorToastOptions";
 
 export const LoginForm: React.FC = () => {
   const {
@@ -19,13 +21,18 @@ export const LoginForm: React.FC = () => {
   const router = useRouter();
   console.info(errors);
   const mutation = useLogin();
+  const toast = useToast();
 
   const onSumbit: SubmitHandler<LoginVariables> = (data) => {
     mutation.mutate(
       { ...data },
       {
         onSuccess: () => router.push("/dashboard"),
-        onError: () => console.error("An error occured!"),
+        onError: (error) => {
+          console.error("An error occured!");
+          console.info(error);
+          toast(errorToastOptions);
+        },
       },
     );
   };

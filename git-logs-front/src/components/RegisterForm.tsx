@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +12,7 @@ import {
   type RegisterVariables,
   useRegister,
 } from "~/hooks/mutations/useRegister";
+import { errorToastOptions } from "~/toasts/errorToastOptions";
 
 export const RegisterForm: React.FC = () => {
   const {
@@ -22,12 +24,18 @@ export const RegisterForm: React.FC = () => {
   const router = useRouter();
   console.info(errors);
   const mutation = useRegister();
+  const toast = useToast();
+
   const onSumbit: SubmitHandler<RegisterVariables> = (data) => {
     mutation.mutate(
       { ...data },
       {
         onSuccess: () => router.push("/dashboard"),
-        onError: () => console.error("An error occured!"),
+        onError: (error) => {
+          console.error("An error occured!");
+          console.info(error);
+          toast(errorToastOptions);
+        },
       },
     );
   };
