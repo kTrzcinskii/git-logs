@@ -5,22 +5,30 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
-
-interface Inputs {
-  username: string;
-  password: string;
-}
+import { type LoginVariables, useLogin } from "~/hooks/mutations/useLogin";
 
 export const LoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isLoading },
-  } = useForm<Inputs>();
+  } = useForm<LoginVariables>();
 
+  const router = useRouter();
   console.info(errors);
-  const onSumbit: SubmitHandler<Inputs> = (data) => console.info(data);
+  const mutation = useLogin();
+
+  const onSumbit: SubmitHandler<LoginVariables> = (data) => {
+    mutation.mutate(
+      { ...data },
+      {
+        onSuccess: () => router.push("/dashboard"),
+        onError: () => console.error("An error occured!"),
+      },
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit(onSumbit)}>
