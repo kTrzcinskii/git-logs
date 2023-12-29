@@ -1,4 +1,8 @@
-import { type UseMutationResult, useMutation } from "@tanstack/react-query";
+import {
+  type UseMutationResult,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { addRepository } from "~/api/addRepository";
 import { useGetJwtToken } from "../useGetJwtToken";
 
@@ -18,6 +22,7 @@ export const useAddRepository = (): UseMutationResult<
   unknown
 > => {
   const token = useGetJwtToken();
+  const queryClient = useQueryClient();
   const mutation = useMutation<
     AddRepositoryResponse,
     unknown,
@@ -28,8 +33,8 @@ export const useAddRepository = (): UseMutationResult<
       console.info(data);
       return data;
     },
-    onSuccess: (_data) => {
-      // todo: invalidate query for git repos
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["repositories"] });
     },
   });
   return mutation;
