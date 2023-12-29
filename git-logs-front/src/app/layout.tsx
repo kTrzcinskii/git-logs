@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { AppWrapper } from "~/components/AppWrapper";
+import { CookiesProvider } from "next-client-cookies/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <AppWrapper>{children}</AppWrapper>
+        <CookiesProvider>
+          <AppWrapper>{children}</AppWrapper>
+        </CookiesProvider>
       </body>
     </html>
   );
