@@ -89,6 +89,8 @@ public class GitRepoService {
 
     private Iterable<RevCommit> fetchLogs(Git git) throws GitAPIException {
         LogCommand logCommand = git.log();
+        int maxLogCount = 30;
+        logCommand.setMaxCount(maxLogCount);
         return logCommand.call();
     }
 
