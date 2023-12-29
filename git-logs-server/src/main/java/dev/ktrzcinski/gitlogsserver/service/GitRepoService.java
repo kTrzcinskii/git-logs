@@ -36,7 +36,7 @@ public class GitRepoService {
 
     public Page<GetGitRepoResponse> getAll(int pageNumber) {
         var username = userService.getCurrentUserUsername();
-        int pageSize = 100;
+        int pageSize = 10;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return gitRepoRepository.findAllByUserUsername(username, pageable).map(this::mapToGetGitRepoResponse);
     }
