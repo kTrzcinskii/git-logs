@@ -23,6 +23,8 @@ export const RepositoryLogCard: React.FC<Props> = ({
   content,
   createdAt,
 }) => {
+  const date = new Date(createdAt);
+
   return (
     <Card>
       <CardHeader>
@@ -38,7 +40,9 @@ export const RepositoryLogCard: React.FC<Props> = ({
           <Text as="i">
             By {authorName} ({authorEmail})
           </Text>
-          <Text as="i">At {createdAt}</Text>
+          <Text as="i">
+            At {date.toLocaleTimeString()} - {date.toLocaleDateString()}
+          </Text>
         </VStack>
       </CardFooter>
     </Card>
