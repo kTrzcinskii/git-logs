@@ -20,7 +20,7 @@ const Dashboard = () => {
   return (
     <>
       <main className="bg flex flex-col items-center justify-center">
-        <VStack spacing={10}>
+        <VStack spacing={10} my={50}>
           <Button onClick={onOpen}>Add Repository</Button>
           <RepositoriesList />
         </VStack>
